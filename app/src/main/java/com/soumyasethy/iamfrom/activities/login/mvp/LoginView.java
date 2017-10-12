@@ -17,6 +17,9 @@ import com.soumyasethy.iamfrom.app.network.model.Details;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observable;
@@ -42,10 +45,13 @@ public class LoginView extends FrameLayout {
     Toolbar toolbar;
     private Subscription subscription;
 
+    private Pattern pattern;
+    private Matcher matcher;
+
 
     public LoginView(Activity activity) {
         super(activity);
-
+        pattern = Pattern.compile(PASSWORD_PATTERN);
         inflate(getContext(), R.layout.login, this);
 
         progressDialog.setMessage("Logging...");
@@ -85,18 +91,20 @@ public class LoginView extends FrameLayout {
 
     }
 
-    public void validatePassword(String password) {
+    public boolean validatePassword(String password) {
 
         password_edt.setError(null);
         password = getPasswordEdit();
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password)) {
-            password_edt.setError("Invalid Password");
-            return;
-        } else if (!isPasswordValid(password)) {
-            return;
+       /* if (!TextUtils.isEmpty(password)) {
+            password_edt.setError("Empty Password");
+            return false;
+        } *//*else*/
+        if (isPasswordValid(password)) {
+            return true;
         } else {
             password_edt.setError("Invalid Password Pattern");
+            return false;
         }
 
     }
@@ -108,11 +116,10 @@ public class LoginView extends FrameLayout {
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        if (password.length() > 7) {
-            return PASSWORD_PATTERN.matches(password);
-        } else {
-            return false;
-        }
+        matcher = pattern.matcher(password);
+        return matcher.matches();
+
+
     }
 
 
@@ -129,4 +136,13 @@ public class LoginView extends FrameLayout {
     }
 
 
+    public void setLoginEnabled(Boolean aBoolean) {
+        login_btn.setEnabled(aBoolean);
+        if (aBoolean) {
+            login_btn.setAlpha(1);
+        } else {
+            login_btn.setAlpha(0.3f);
+        }
+
+    }
 }

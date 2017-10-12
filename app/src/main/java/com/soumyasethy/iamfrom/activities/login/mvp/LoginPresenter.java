@@ -1,14 +1,15 @@
 package com.soumyasethy.iamfrom.activities.login.mvp;
 
 import com.jakewharton.rxbinding.widget.RxTextView;
+import com.jakewharton.rxbinding.widget.TextViewTextChangeEvent;
 import com.soumyasethy.iamfrom.activities.login.mvp.model.LoginModel;
 
 import java.util.concurrent.TimeUnit;
 
+import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -29,10 +30,28 @@ public class LoginPresenter {
     }
 
     public void onCreate() {
-        compositeSubscription.add(validateEmail());
-        compositeSubscription.add(validatePassword());
+        //compositeSubscription.add(validateEmail());
+        //compositeSubscription.add(validatePassword());
+        compositeSubscription.add(validate());
         compositeSubscription.add(observeLoginBtn());
         compositeSubscription.add(loadSavedState());
+    }
+
+    private Subscription validate() {
+        Observable<TextViewTextChangeEvent> emailChangeObservable = RxTextView.textChangeEvents(view.email_edt);
+        Observable<TextViewTextChangeEvent> passwordChangeObservable = RxTextView.textChangeEvents(view.password_edt);
+        // force-disable the button
+        view.setLoginEnabled(false);
+        return Observable.combineLatest(emailChangeObservable, passwordChangeObservable,
+                (emailObservable, passwordObservable) -> {
+                    boolean emailCheck = view.validateEmail(emailObservable.text().toString());
+                    boolean passwordCheck = view.validatePassword(passwordObservable.text().toString());
+                    return emailCheck && passwordCheck;
+                })
+                .subscribe(aBoolean -> {
+                    view.setLoginEnabled(aBoolean);
+                });
+
     }
 
     public void onDestroy() {
@@ -43,12 +62,7 @@ public class LoginPresenter {
         return RxTextView.textChanges(view.email_edt)
                 .debounce(300, TimeUnit.MILLISECONDS)
                 .observeOn(Schedulers.computation())
-                .filter(new Func1<CharSequence, Boolean>() {
-                    @Override
-                    public Boolean call(CharSequence charSequence) {
-                        return charSequence.length() != 0;
-                    }
-                })
+                .filter(charSequence -> charSequence.length() != 0)
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<CharSequence>() {
@@ -59,7 +73,7 @@ public class LoginPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        //  Log.d(TAG, "Error.", e);
+                        Timber.d("Error :" + e);
                     }
 
                     //@formatter:on
@@ -75,12 +89,7 @@ public class LoginPresenter {
         return RxTextView.textChanges(view.password_edt)
                 .debounce(300, TimeUnit.MILLISECONDS)
                 .observeOn(Schedulers.computation())
-                .filter(new Func1<CharSequence, Boolean>() {
-                    @Override
-                    public Boolean call(CharSequence charSequence) {
-                        return charSequence.length() != 0;
-                    }
-                })
+                .filter(charSequence -> charSequence.length() != 0)
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<CharSequence>() {
@@ -91,7 +100,7 @@ public class LoginPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        //  Log.d(TAG, "Error.", e);
+                        Timber.d("Error :" + e);
                     }
 
                     //@formatter:on
