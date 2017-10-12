@@ -132,7 +132,8 @@ public class LoginView extends FrameLayout {
     }
 
     public void ShowToast(Details message) {
-        Toast.makeText(getContext(), "Hello :" + message.userDetails.firstName, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Login :" + message.status + "\nHello :" + message.userDetails.firstName, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Response :" + message.toString(), Toast.LENGTH_SHORT).show();
     }
 
 
