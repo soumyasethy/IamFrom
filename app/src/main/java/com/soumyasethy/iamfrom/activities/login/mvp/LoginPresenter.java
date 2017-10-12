@@ -1,24 +1,21 @@
 package com.soumyasethy.iamfrom.activities.login.mvp;
 
-import android.text.Editable;
-import android.text.TextWatcher;
-
 import com.jakewharton.rxbinding.widget.RxTextView;
-import com.jakewharton.rxbinding.widget.TextViewTextChangeEvent;
-import com.soumyasethy.iamfrom.activities.login.mvp.model.Credentials;
 import com.soumyasethy.iamfrom.activities.login.mvp.model.LoginModel;
-import com.soumyasethy.iamfrom.app.network.model.Details;
 
 import java.util.concurrent.TimeUnit;
 
+import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
+/**
+ * Created by Soumya Ranjan Sethy <sethy.soumyaranjan@gmail.com> on 10/10/17.
+ */
 @SuppressWarnings("Convert2MethodRef")
 public class LoginPresenter {
 
@@ -32,38 +29,91 @@ public class LoginPresenter {
     }
 
     public void onCreate() {
-
-
-       // compositeSubscription.add(validateEDT());
+        compositeSubscription.add(validateEmail());
+        compositeSubscription.add(validatePassword());
         compositeSubscription.add(observeLoginBtn());
         compositeSubscription.add(loadSavedState());
     }
-
-
 
     public void onDestroy() {
         compositeSubscription.clear();
     }
 
-    private Subscription loadSavedState() {
-        return model.getReposFromSaveState()
-                .subscribe(getLoginDetailsList -> view.setMessage("Login button clicked - " + getLoginDetailsList));
+    private Subscription validateEmail() {
+        return RxTextView.textChanges(view.email_edt)
+                .debounce(300, TimeUnit.MILLISECONDS)
+                .observeOn(Schedulers.computation())
+                .filter(new Func1<CharSequence, Boolean>() {
+                    @Override
+                    public Boolean call(CharSequence charSequence) {
+                        return charSequence.length() != 0;
+                    }
+                })
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<CharSequence>() {
+                    //@formatter:off
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        //  Log.d(TAG, "Error.", e);
+                    }
+
+                    //@formatter:on
+                    @Override
+                    public void onNext(CharSequence charSequence) {
+                        view.validateEmail(charSequence.toString());
+                    }
+                });
+
+    }
+
+    private Subscription validatePassword() {
+        return RxTextView.textChanges(view.password_edt)
+                .debounce(300, TimeUnit.MILLISECONDS)
+                .observeOn(Schedulers.computation())
+                .filter(new Func1<CharSequence, Boolean>() {
+                    @Override
+                    public Boolean call(CharSequence charSequence) {
+                        return charSequence.length() != 0;
+                    }
+                })
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<CharSequence>() {
+                    //@formatter:off
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        //  Log.d(TAG, "Error.", e);
+                    }
+
+                    //@formatter:on
+                    @Override
+                    public void onNext(CharSequence charSequence) {
+                        view.validatePassword(charSequence.toString());
+                    }
+                });
     }
 
     private Subscription observeLoginBtn() {
         return view.observeLoginButton()
-                //.doOnNext(__ -> Timber.d("Login Button is clicked"))
                 .doOnNext(__ -> view.showLoading(true))
-
-                //.map(__ -> view.validate(view.getEmailEdit(),view.getPasswordEdit()))
                 .observeOn(Schedulers.io())
                 .switchMap(__ -> {
                     String email = view.getEmailEdit();
+                    //view.validateEmail(email);
                     String password = view.getPasswordEdit();
-                    //view.validate( email, password);
+                    //view.validatePassword(email);
                     return model.getLoggedUserDetails(email,password); // long enough
                 })
-                .debounce(400, TimeUnit.MILLISECONDS)
+                //.debounce(400, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(getLoginDetailsList -> model.saveRepoListState(getLoginDetailsList))
                 .doOnEach(__ -> view.showLoading(false))
@@ -73,5 +123,10 @@ public class LoginPresenter {
                     Timber.d(getLoginDetailsList.toString());
                     view.ShowToast(getLoginDetailsList);
                 });
+    }
+
+    private Subscription loadSavedState() {
+        return model.getReposFromSaveState()
+                .subscribe(getLoginDetailsList -> view.setMessage("Login button clicked - " + getLoginDetailsList));
     }
 }

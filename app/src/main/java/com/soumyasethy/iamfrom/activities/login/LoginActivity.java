@@ -11,6 +11,9 @@ import com.soumyasethy.iamfrom.app.IamFromApplication;
 
 import javax.inject.Inject;
 
+/**
+ * Created by Soumya Ranjan Sethy <sethy.soumyaranjan@gmail.com> on 10/10/17.
+ */
 public class LoginActivity extends AppCompatActivity {
 
     @Inject

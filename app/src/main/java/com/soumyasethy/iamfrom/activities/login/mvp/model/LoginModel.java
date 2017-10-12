@@ -8,6 +8,9 @@ import com.twistedequations.rxstate.RxSaveState;
 
 import rx.Observable;
 
+/**
+ * Created by Soumya Ranjan Sethy <sethy.soumyaranjan@gmail.com> on 10/10/17.
+ */
 public class LoginModel {
 
     public static final String LOGIN_STATE_KEY = "LOGIN_KEY";
