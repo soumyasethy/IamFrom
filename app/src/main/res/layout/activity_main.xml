@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.soumyasethy.iamfrom.activities.new_home.MainActivity">
+    tools:context="com.soumyasethy.iamfrom.activities.home.MainActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/main_toolbar"
