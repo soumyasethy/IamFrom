@@ -1,4 +1,4 @@
-package com.soumyasethy.iamfrom.activities.new_home.mvp;
+package com.soumyasethy.iamfrom.activities.home.mvp;
 
 import android.app.Activity;
 
@@ -39,4 +39,3 @@ public class HomeModel {
     }
 
 }
-//getUserReops

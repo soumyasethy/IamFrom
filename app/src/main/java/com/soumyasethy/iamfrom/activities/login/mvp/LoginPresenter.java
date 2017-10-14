@@ -50,7 +50,6 @@ public class LoginPresenter {
                 .subscribe(aBoolean -> {
                     view.setLoginEnabled(aBoolean);
                 });
-
     }
 
     private Subscription observeLoginBtn() {
@@ -60,7 +59,7 @@ public class LoginPresenter {
                 .switchMap(__ -> {
                     String email = view.getEmailEdit();
                     String password = view.getPasswordEdit();
-                    return model.getLoggedUserDetails(email,password); // long enough
+                    return model.getLoggedUserDetails(email, password);
                 })
                 //.debounce(400, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())

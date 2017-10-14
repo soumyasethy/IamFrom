@@ -13,19 +13,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:windowSoftInputMode="adjustPan">
-        <activity android:name=".activities.new_home.MainActivity">
-            <!-- <intent-filter>
+        <activity android:name=".activities.home.MainActivity">
+            <intent-filter>
                  <action android:name="android.intent.action.MAIN"/>
 
                  <category android:name="android.intent.category.LAUNCHER"/>
-             </intent-filter>-->
+            </intent-filter>
         </activity>
         <activity android:name=".activities.login.LoginActivity">
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
 
         <!--   <activity android:name=".activities.repos.ReposActivity"/>-->

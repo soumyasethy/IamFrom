@@ -122,7 +122,6 @@ public class LoginView extends FrameLayout {
 
     }
 
-
     public void showLoading(boolean loading) {
         if (loading) {
             progressDialog.show();
@@ -135,7 +134,6 @@ public class LoginView extends FrameLayout {
         Toast.makeText(getContext(), "Login :" + message.status + "\nHello :" + message.userDetails.firstName, Toast.LENGTH_SHORT).show();
         Toast.makeText(getContext(), "Response :" + message.toString(), Toast.LENGTH_SHORT).show();
     }
-
 
     public void setLoginEnabled(Boolean aBoolean) {
         login_btn.setEnabled(aBoolean);

@@ -1,8 +1,5 @@
-package com.soumyasethy.iamfrom.activities.new_home.mvp;
+package com.soumyasethy.iamfrom.activities.home.mvp;
 
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 @SuppressWarnings("Convert2MethodRef")
@@ -18,20 +15,17 @@ public class HomePresenter {
     }
 
     public void onCreate() {
-        compositeSubscription.add(observeLookupButton());
-        compositeSubscription.add(loadSavedState());
+        // compositeSubscription.add(observeLookupButton());
+        //  compositeSubscription.add(loadSavedState());
     }
 
     public void onDestroy() {
         compositeSubscription.clear();
     }
 
-    private Subscription loadSavedState() {
-        return model.getReposFromSaveState()
-                .subscribe(gitHubRepoList -> view.setMessage("Look up button clicked - " + gitHubRepoList));
-    }
 
-    private Subscription observeLookupButton() {
+
+   /* private Subscription observeLookupButton() {
         return view.observeButton()
                 // .doOnNext(__ -> Timber.d("Button is clicked......."))
                 .doOnNext(__ -> view.showLoading(true))
@@ -47,5 +41,5 @@ public class HomePresenter {
                     //model.getUserDetails();
                     view.ShowToast(gitHubRepoList);
                 });
-    }
+    }*/
 }

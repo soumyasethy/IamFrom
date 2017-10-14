@@ -1,12 +1,12 @@
-package com.soumyasethy.iamfrom.activities.new_home;
+package com.soumyasethy.iamfrom.activities.home;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.soumyasethy.iamfrom.activities.new_home.dagger.DaggerHomeComponent;
-import com.soumyasethy.iamfrom.activities.new_home.dagger.HomeModule;
-import com.soumyasethy.iamfrom.activities.new_home.mvp.HomePresenter;
-import com.soumyasethy.iamfrom.activities.new_home.mvp.HomeView;
+import com.soumyasethy.iamfrom.activities.home.dagger.DaggerHomeComponent;
+import com.soumyasethy.iamfrom.activities.home.dagger.HomeModule;
+import com.soumyasethy.iamfrom.activities.home.mvp.HomePresenter;
+import com.soumyasethy.iamfrom.activities.home.mvp.HomeView;
 import com.soumyasethy.iamfrom.app.IamFromApplication;
 
 import javax.inject.Inject;
@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(view);
         presenter.onCreate();
+
     }
 
     @Override
@@ -37,4 +38,5 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         presenter.onDestroy();
     }
+
 }

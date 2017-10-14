@@ -1,10 +1,10 @@
-package com.soumyasethy.iamfrom.activities.new_home.dagger;
+package com.soumyasethy.iamfrom.activities.home.dagger;
 
 import android.app.Activity;
 
-import com.soumyasethy.iamfrom.activities.new_home.mvp.HomeModel;
-import com.soumyasethy.iamfrom.activities.new_home.mvp.HomePresenter;
-import com.soumyasethy.iamfrom.activities.new_home.mvp.HomeView;
+import com.soumyasethy.iamfrom.activities.home.mvp.HomeModel;
+import com.soumyasethy.iamfrom.activities.home.mvp.HomePresenter;
+import com.soumyasethy.iamfrom.activities.home.mvp.HomeView;
 import com.soumyasethy.iamfrom.app.network.IamFromNetwork;
 
 import dagger.Module;

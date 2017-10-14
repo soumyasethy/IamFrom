@@ -1,6 +1,6 @@
-package com.soumyasethy.iamfrom.activities.new_home.dagger;
+package com.soumyasethy.iamfrom.activities.home.dagger;
 
-import com.soumyasethy.iamfrom.activities.new_home.MainActivity;
+import com.soumyasethy.iamfrom.activities.home.MainActivity;
 import com.soumyasethy.iamfrom.app.dagger.AppComponent;
 
 import dagger.Component;
